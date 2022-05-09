@@ -1,0 +1,179 @@
+SQL> create table customers( customer_id int, sale_date date, sale_amount int, salesperson varchar(10), store_state varchar(10), order_id varchar(10));
+create table customers( customer_id int, sale_date date, sale_amount int, salesperson varchar(10), store_state varchar(10), order_id varchar(10))
+             *
+ERROR at line 1:
+ORA-00955: name is already used by an existing object 
+
+
+SQL> drop table customers;
+
+Table dropped.
+
+SQL> create table customers( customer_id int, sale_date date, sale_amount int, salesperson varchar(10), store_state varchar(10), order_id varchar(10));
+
+Table created.
+
+SQL> insert into customers (customer_id,sale_date,sale_amount,salesperson,store_state,order_id) values ('1001','23-jun-2020','1200','Rajk','KA','1001');
+
+1 row created.
+
+SQL> insert into customers (customer_id,sale_date,sale_amount,salesperson,store_state,order_id) values ('1001','22-jun-2020','1200','MK','NULL','1002');
+
+1 row created.
+
+SQL> insert into customers (customer_id,sale_date,sale_amount,salesperson,store_state,order_id) values ('1002','22-jun-2020','1200','Malika Rak','MH','1003');
+
+1 row created.
+
+SQL> insert into customers (customer_id,sale_date,sale_amount,salesperson,store_state,order_id) values ('1003','22-jun-2020','1500','Malika rak','MH','1004');
+
+1 row created.
+
+SQL> insert into customers (customer_id,sale_date,sale_amount,salesperson,store_state,order_id) values ('1004','22-jun-2020','1210','MH','NULL','1003');
+
+1 row created.
+
+SQL> insert into customers (customer_id,sale_date,sale_amount,salesperson,store_state,order_id) values ('1005','19-dec-2019','4200','RK Rakesh','MH','1007');
+
+1 row created.
+
+SQL> insert into customers (customer_id,sale_date,sale_amount,salesperson,store_state,order_id) values ('1002','21-jun-2020','1200','Molly Samb','DL','1001');
+
+1 row created.
+
+SQL> select * from customers;
+
+CUSTOMER_ID SALE_DATE SALE_AMOUNT SALESPERSO STORE_STAT ORDER_ID                
+----------- --------- ----------- ---------- ---------- ----------              
+       1001 23-JUN-20        1200 Rajk       KA         1001                    
+       1001 22-JUN-20        1200 MK         NULL       1002                    
+       1002 22-JUN-20        1200 Malika Rak MH         1003                    
+       1003 22-JUN-20        1500 Malika rak MH         1004                    
+       1004 22-JUN-20        1210 MH         NULL       1003                    
+       1005 19-DEC-19        4200 RK Rakesh  MH         1007                    
+       1002 21-JUN-20        1200 Molly Samb DL         1001                    
+
+7 rows selected.
+
+SQL> insert into customers values ('1006','04-jan-2020','3200','M K','DL','1008');
+
+1 row created.
+
+SQL> commit;
+
+Commit complete.
+
+SQL> select * from customers;
+
+CUSTOMER_ID SALE_DATE SALE_AMOUNT SALESPERSO STORE_STAT ORDER_ID                
+----------- --------- ----------- ---------- ---------- ----------              
+       1001 23-JUN-20        1200 Rajk       KA         1001                    
+       1001 22-JUN-20        1200 MK         NULL       1002                    
+       1002 22-JUN-20        1200 Malika Rak MH         1003                    
+       1003 22-JUN-20        1500 Malika rak MH         1004                    
+       1004 22-JUN-20        1210 MH         NULL       1003                    
+       1005 19-DEC-19        4200 RK Rakesh  MH         1007                    
+       1002 21-JUN-20        1200 Molly Samb DL         1001                    
+       1006 04-JAN-20        3200 M K        DL         1008                    
+
+8 rows selected.
+
+SQL> delete from customers where order_id = 1008;
+
+1 row deleted.
+
+SQL> select * from customers;
+
+CUSTOMER_ID SALE_DATE SALE_AMOUNT SALESPERSO STORE_STAT ORDER_ID                
+----------- --------- ----------- ---------- ---------- ----------              
+       1001 23-JUN-20        1200 Rajk       KA         1001                    
+       1001 22-JUN-20        1200 MK         NULL       1002                    
+       1002 22-JUN-20        1200 Malika Rak MH         1003                    
+       1003 22-JUN-20        1500 Malika rak MH         1004                    
+       1004 22-JUN-20        1210 MH         NULL       1003                    
+       1005 19-DEC-19        4200 RK Rakesh  MH         1007                    
+       1002 21-JUN-20        1200 Molly Samb DL         1001                    
+
+7 rows selected.
+
+SQL> rollback;
+
+Rollback complete.
+
+SQL> select * from customers;
+
+CUSTOMER_ID SALE_DATE SALE_AMOUNT SALESPERSO STORE_STAT ORDER_ID                
+----------- --------- ----------- ---------- ---------- ----------              
+       1001 23-JUN-20        1200 Rajk       KA         1001                    
+       1001 22-JUN-20        1200 MK         NULL       1002                    
+       1002 22-JUN-20        1200 Malika Rak MH         1003                    
+       1003 22-JUN-20        1500 Malika rak MH         1004                    
+       1004 22-JUN-20        1210 MH         NULL       1003                    
+       1005 19-DEC-19        4200 RK Rakesh  MH         1007                    
+       1002 21-JUN-20        1200 Molly Samb DL         1001                    
+       1006 04-JAN-20        3200 M K        DL         1008                    
+
+8 rows selected.
+
+SQL> savepoint s1;
+
+Savepoint created.
+
+SQL> delete from customers where order_id = 1003;
+
+2 rows deleted.
+
+SQL> savepoint s2;
+
+Savepoint created.
+
+SQL> select * from customers;
+
+CUSTOMER_ID SALE_DATE SALE_AMOUNT SALESPERSO STORE_STAT ORDER_ID                
+----------- --------- ----------- ---------- ---------- ----------              
+       1001 23-JUN-20        1200 Rajk       KA         1001                    
+       1001 22-JUN-20        1200 MK         NULL       1002                    
+       1003 22-JUN-20        1500 Malika rak MH         1004                    
+       1005 19-DEC-19        4200 RK Rakesh  MH         1007                    
+       1002 21-JUN-20        1200 Molly Samb DL         1001                    
+       1006 04-JAN-20        3200 M K        DL         1008                    
+
+6 rows selected.
+
+SQL> rollback to s2;
+
+Rollback complete.
+
+SQL> select * from customers;
+
+CUSTOMER_ID SALE_DATE SALE_AMOUNT SALESPERSO STORE_STAT ORDER_ID                
+----------- --------- ----------- ---------- ---------- ----------              
+       1001 23-JUN-20        1200 Rajk       KA         1001                    
+       1001 22-JUN-20        1200 MK         NULL       1002                    
+       1003 22-JUN-20        1500 Malika rak MH         1004                    
+       1005 19-DEC-19        4200 RK Rakesh  MH         1007                    
+       1002 21-JUN-20        1200 Molly Samb DL         1001                    
+       1006 04-JAN-20        3200 M K        DL         1008                    
+
+6 rows selected.
+
+SQL> rollback to s1;
+
+Rollback complete.
+
+SQL> select * from customers;
+
+CUSTOMER_ID SALE_DATE SALE_AMOUNT SALESPERSO STORE_STAT ORDER_ID                
+----------- --------- ----------- ---------- ---------- ----------              
+       1001 23-JUN-20        1200 Rajk       KA         1001                    
+       1001 22-JUN-20        1200 MK         NULL       1002                    
+       1002 22-JUN-20        1200 Malika Rak MH         1003                    
+       1003 22-JUN-20        1500 Malika rak MH         1004                    
+       1004 22-JUN-20        1210 MH         NULL       1003                    
+       1005 19-DEC-19        4200 RK Rakesh  MH         1007                    
+       1002 21-JUN-20        1200 Molly Samb DL         1001                    
+       1006 04-JAN-20        3200 M K        DL         1008                    
+
+8 rows selected.
+
+SQL> spool off
